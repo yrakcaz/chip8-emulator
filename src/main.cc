@@ -1,4 +1,4 @@
-#include <iostream>
+#include "../includes/emulator.hh"
 
 int main(int argc, char **argv)
 {
@@ -9,9 +9,11 @@ int main(int argc, char **argv)
         if (!(std::string(argv[1])).compare("-h") ||
             !(std::string(argv[1])).compare("--help"))
             std::cout << "Usage : chip8-emulator [ROM]" << std::endl;
-        //else
-        //    Emulator em(argv[1]);
-        //    em.run();
+        else
+        {
+            Emulator em(argv[1]);
+            return em.run();
+        }
         return 0;
     }
     return 1;

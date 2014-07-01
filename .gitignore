@@ -1,2 +1,4 @@
 *.o
 .*.swp
+chip8-emulator
+makefile.rules

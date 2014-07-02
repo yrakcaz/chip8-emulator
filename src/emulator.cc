@@ -10,7 +10,6 @@ Emulator::Emulator()
 
 Emulator::Emulator(char* file)
     : state_(0)
-    , kb_(Keyboard())
 {
     file++;
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -28,7 +27,8 @@ int Emulator::run()
     {
         if (kb_.get_key_pressed() == SDLK_ESCAPE)
             break;
-        std::cout << kb_.get_key_pressed() << std::endl;
+        char c = kb_.get_key_pressed() != -1 ? kb_.get_key_pressed() : '\0';
+        std::cout << c << std::endl;
     }
     SDL_Quit();
     return 0;

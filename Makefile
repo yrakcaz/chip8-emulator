@@ -1,7 +1,7 @@
 EXE=chip8-emulator
 CXX=g++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++11 -pedantic
-SRC=src/keyboard.cc src/emulator.cc src/main.cc
+SRC=src/keyboard.cc src/CPU.cc src/emulator.cc src/main.cc
 LDFLAGS=-lSDL
 OBJ=$(SRC:.cc=.o)
 TAR=yrakcaz-chip8-emulator
@@ -24,5 +24,8 @@ distclean: clean
 
 export:
 	git archive HEAD --prefix=$(TAR)/ | bzip2 > $(TAR).tar.bz2
+
+boot: all
+	./chip8-emulator tests/PONG
 
 .PHONY: all clean distclean export

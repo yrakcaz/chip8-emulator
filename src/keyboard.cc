@@ -30,6 +30,8 @@ Keyboard::~Keyboard()
 int Keyboard::is_key_pressed(int c)
 {
     SDL_PollEvent(&event_);
+    if (c == SDLK_ESCAPE && event_.type == SDL_QUIT)
+        return 1;
     std::map<char, int>::iterator it = key_map_.begin();
     char val = -1;
     while (it != key_map_.end())
@@ -39,9 +41,10 @@ int Keyboard::is_key_pressed(int c)
             val = (*it).first;
             break;
         }
+        it++;
     }
     if (event_.type == SDL_KEYDOWN)
-        if (event_.key.keysym.sym == c && val != -1)
+        if (event_.key.keysym.sym == val && val != -1)
             return 1;
     return 0;
 }
@@ -50,8 +53,6 @@ int Keyboard::get_key_pressed()
 {
     while (1)
     {
-        if (event_.type == SDL_QUIT)
-            return SDLK_ESCAPE;
         SDL_PollEvent(&event_);
         if (event_.type == SDL_KEYDOWN)
             return key_map_[event_.key.keysym.sym];

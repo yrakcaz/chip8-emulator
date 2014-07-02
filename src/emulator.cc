@@ -25,10 +25,8 @@ int Emulator::run()
 {
     while (!state_)
     {
-        if (kb_.get_key_pressed() == SDLK_ESCAPE)
+        if (kb_.is_key_pressed(SDLK_ESCAPE))
             break;
-        char c = kb_.get_key_pressed() != -1 ? kb_.get_key_pressed() : '\0';
-        std::cout << c << std::endl;
     }
     SDL_Quit();
     return 0;

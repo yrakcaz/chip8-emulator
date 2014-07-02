@@ -4,6 +4,7 @@
 # include "keyboard.hh"
 # include "RAM.hh"
 # include "CPU.hh"
+# include "display.hh"
 # include <iostream>
 
 class Emulator

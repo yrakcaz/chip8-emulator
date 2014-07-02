@@ -1,6 +1,5 @@
 #include "../includes/emulator.hh"
 
-#define SCALE         20
 #define SCREEN_WIDTH  (64 * SCALE)
 #define SCREEN_HEIGHT (32 * SCALE)
 

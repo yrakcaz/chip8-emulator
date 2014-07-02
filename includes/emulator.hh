@@ -2,6 +2,8 @@
 # define EMULATOR_HH
 
 # include "keyboard.hh"
+# include "RAM.hh"
+# include "CPU.hh"
 # include <iostream>
 
 class Emulator
@@ -17,6 +19,8 @@ class Emulator
         int state_;
         SDL_Surface* screen_;
         Keyboard kb_;
+        CPU cpu_;
+        RAM ram_;
 };
 
 #endif /* !EMULATOR_HH */

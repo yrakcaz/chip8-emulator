@@ -10,11 +10,12 @@ Emulator::Emulator()
 
 Emulator::Emulator(char* file)
     : state_(0)
+    , ram_(file)
 {
-    file++;
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     screen_ = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_ANYFORMAT);
     SDL_WM_SetCaption("Chip8 Emulator", NULL);
+    ram_.print();
 }
 
 Emulator::~Emulator()

@@ -4,7 +4,7 @@ CPU::CPU()
   : Ireg_(0)
   , timer_(0)
   , sound_(0)
-  , pc_(0)
+  , pc_(0x200)
   , sp_(0)
 {
     for (int i = 0; i < TAB_SIZE; i++)

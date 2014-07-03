@@ -87,3 +87,14 @@ void CPU::stack_set(uint16_t val)
 {
     stack_[sp_] = val;
 }
+
+void CPU::ret()
+{
+    pc_ = stack_[sp_--];
+}
+
+void CPU::call(uint16_t addr)
+{
+    stack_[sp_++] = pc_;
+    pc_ = addr;
+}

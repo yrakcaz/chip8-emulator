@@ -32,6 +32,9 @@ class CPU
         uint16_t stack_get();
         void stack_set(uint16_t val);
 
+        void ret();
+        void call(uint16_t addr);
+
     private:
         uint8_t registers_[TAB_SIZE];
         uint16_t Ireg_;

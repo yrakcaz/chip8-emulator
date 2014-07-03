@@ -18,6 +18,11 @@ void Display::screen_set(SDL_Surface* screen)
     screen_ = screen;
 }
 
+void Display::clear()
+{
+    SDL_FillRect(screen_, NULL, SDL_MapRGB(screen_->format, 0, 0, 0));
+}
+
 uint32_t Display::getpixel_unit(int x, int y)
 {
     int bpp = screen_->format->BytesPerPixel;

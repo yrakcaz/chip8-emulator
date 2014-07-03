@@ -19,6 +19,7 @@ class Display
 
         void screen_set(SDL_Surface* screen);
         void draw_sprite(int x, int y, int pos, int len);
+        void clear();
 
     private:
         uint32_t getpixel_unit(int x, int y);

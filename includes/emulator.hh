@@ -17,6 +17,9 @@ class Emulator
         int run();
 
     private:
+        void fetch_decode_execute();
+
+    private:
         int state_;
         SDL_Surface* screen_;
         Keyboard kb_;

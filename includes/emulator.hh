@@ -21,7 +21,8 @@ class Emulator
         SDL_Surface* screen_;
         Keyboard kb_;
         CPU cpu_;
-        RAM ram_;
+        RAM* ram_;
+        Display display_;
 };
 
 #endif /* !EMULATOR_HH */

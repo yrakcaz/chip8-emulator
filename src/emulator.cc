@@ -1,19 +1,18 @@
 #include "../includes/emulator.hh"
 
-#define SCREEN_WIDTH  (64 * SCALE)
-#define SCREEN_HEIGHT (32 * SCALE)
-
 Emulator::Emulator()
 {
 }
 
 Emulator::Emulator(char* file)
     : state_(0)
-    , ram_(file)
+    , ram_(new RAM(file))
+    , display_(ram_)
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     screen_ = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_ANYFORMAT);
     SDL_WM_SetCaption("Chip8 Emulator", NULL);
+    display_.screen_set(screen_);
 }
 
 Emulator::~Emulator()
@@ -36,7 +35,8 @@ int Emulator::run()
         }
 
         // Fetch, Decode, Execute here!
-
+        
+        SDL_Flip(screen_);
         while (SDL_GetTicks() - last < 16)
             continue;
         last = SDL_GetTicks();

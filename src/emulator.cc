@@ -24,6 +24,8 @@ void Emulator::fetch_decode_execute()
     uint8_t instruction[2];
     instruction[0] = ram_->ram_get(cpu_.pc_get());
     instruction[1] = ram_->ram_get(cpu_.pc_get() + 1);
+    uint16_t instr = instruction[0];
+    instr = (instr << 4) | instruction[1];
     cpu_.pc_set(cpu_.pc_get() + 2);
     switch (instruction[0] >> 4)
     {
@@ -34,10 +36,10 @@ void Emulator::fetch_decode_execute()
                 cpu_.ret();
             break;
         case 0x1:
-            cpu_.pc_set((instruction[0] << 4) | instruction[1]);
+            cpu_.pc_set(instr);
             break;
         case 0x2:
-            cpu_.call(((instruction[0] << 4) | instruction[1]) & 0x0FFF);
+            cpu_.call(instr & 0x0FFF);
             break;
         case 0x3:
             //se(vx, byte)

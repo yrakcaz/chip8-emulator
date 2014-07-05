@@ -60,11 +60,11 @@ void Emulator::fetch_decode_execute()
             if ((instruction[1] & 0x0F) == 0x0)
                 //ld(vx, vy)
             else if ((instruction[1] & 0x0F) == 0x1)
-                //or
+                cpu_.registers[instruction[0] & 0x0F] = (instruction[0] & 0x0F) | ((instruction[1] >> 4) & 0x0F);
             else if ((instruction[1] & 0x0F) == 0x2)
-                //and
+                cpu_.registers[instruction[0] & 0x0F] = (instruction[0] & 0x0F) & ((instruction[1] >> 4) & 0x0F);
             else if ((instruction[1] & 0x0F) == 0x3)
-                //xor
+                cpu_.registers[instruction[0] & 0x0F] = (instruction[0] & 0x0F) ^ ((instruction[1] >> 4) & 0x0F);
             else if ((instruction[1] & 0x0F) == 0x4)
                 //add(vx, vy)
             else if ((instruction[1] & 0x0F) == 0x5)
@@ -117,7 +117,6 @@ void Emulator::fetch_decode_execute()
             else if (instruction[1] == 0x65)
                 //ld(vx, [i])
             break;
-        std::cout << "There is an error into your rom, it could not works!" << std::endl;
     }
 }
 
@@ -135,9 +134,7 @@ int Emulator::run()
             std::cout << '\a' << std::endl;
             cpu_.sound_set(cpu_.sound_get() - 1);
         }
-
-        // Fetch, Decode, Execute here!
-        
+        fetch_decode_execute();
         SDL_Flip(screen_);
         while (SDL_GetTicks() - last < 16)
             continue;

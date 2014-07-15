@@ -1,7 +1,9 @@
 #include "../includes/emulator.hh"
+#include <ctime>
 
 int main(int argc, char **argv)
 {
+    srand(time(NULL));
     if (argc == 1 || argc > 2)
         std::cout << "Invalid arguments: use chip8-emulator -h or --help." << std::endl;
     else

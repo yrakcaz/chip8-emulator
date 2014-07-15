@@ -4,6 +4,7 @@
 # define TAB_SIZE 16
 
 # include <cstdint>
+# include <cstdlib>
 
 class CPU
 {
@@ -34,6 +35,7 @@ class CPU
 
         void ret();
         void call(uint16_t addr);
+        void randomize(uint16_t bytes);
 
     private:
         uint8_t registers_[TAB_SIZE];

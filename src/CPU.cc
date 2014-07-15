@@ -98,3 +98,10 @@ void CPU::call(uint16_t addr)
     stack_[sp_++] = pc_;
     pc_ = addr;
 }
+
+void CPU::randomize(uint16_t bytes)
+{
+    int r = random() % 256;
+    r = r & (bytes & 0x00FF);
+    registers_[(bytes >> 8) & 0x000F] = r;
+}

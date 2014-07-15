@@ -25,7 +25,7 @@ void Emulator::fetch_decode_execute()
     instruction[0] = ram_->ram_get(cpu_.pc_get());
     instruction[1] = ram_->ram_get(cpu_.pc_get() + 1);
     uint16_t instr = instruction[0];
-    instr = (instr << 4) | instruction[1];
+    instr = (instr << 8) | instruction[1];
     cpu_.pc_set(cpu_.pc_get() + 2);
     switch (instruction[0] >> 4)
     {
@@ -42,29 +42,29 @@ void Emulator::fetch_decode_execute()
             cpu_.call(instr & 0x0FFF);
             break;
         case 0x3:
-            //se(vx, byte)
+            cpu_.registers_get(instruction[0] & 0x0F) == instruction[1] ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
             break;
         case 0x4:
-            //sne(vx, byte)
+            cpu_.registers_get(instruction[0] & 0x0F) != instruction[1] ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
             break;
         case 0x5:
-            //se(vx, vy)
+            cpu_.registers_get(instruction[0] & 0x0F) == cpu_.registers_get(instruction[1] >> 4) ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
             break;
         case 0x6:
             //ld(vx, byte)
             break;
         case 0x7:
-            //add (vx, byte)
+            cpu_.registers_set(instruction[0] & 0x0F, cpu_.registers_get(instruction[0] & 0x0F) + instruction[1]);
             break;
         case 0x8:
             if ((instruction[1] & 0x0F) == 0x0)
                 //ld(vx, vy)
             else if ((instruction[1] & 0x0F) == 0x1)
-                cpu_.registers[instruction[0] & 0x0F] = (instruction[0] & 0x0F) | ((instruction[1] >> 4) & 0x0F);
+                cpu_.registers_set(instruction[0] & 0x0F, (instruction[0] & 0x0F) | ((instruction[1] >> 4) & 0x0F));
             else if ((instruction[1] & 0x0F) == 0x2)
-                cpu_.registers[instruction[0] & 0x0F] = (instruction[0] & 0x0F) & ((instruction[1] >> 4) & 0x0F);
+                cpu_.registers_set(instruction[0] & 0x0F, (instruction[0] & 0x0F) & ((instruction[1] >> 4) & 0x0F));
             else if ((instruction[1] & 0x0F) == 0x3)
-                cpu_.registers[instruction[0] & 0x0F] = (instruction[0] & 0x0F) ^ ((instruction[1] >> 4) & 0x0F);
+                cpu_.registers_set(instruction[0] & 0x0F, (instruction[0] & 0x0F) ^ ((instruction[1] >> 4) & 0x0F));
             else if ((instruction[1] & 0x0F) == 0x4)
                 //add(vx, vy)
             else if ((instruction[1] & 0x0F) == 0x5)
@@ -77,25 +77,25 @@ void Emulator::fetch_decode_execute()
                 //shl
             break;
         case 0x9:
-            //sne(vx, vy)
+            cpu_.registers_get(instruction[0] & 0x0F) != cpu_.registers_get(instruction[1] >> 4) ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
             break;
         case 0xA:
-            //ld(I, addr)
+            cpu_.Ireg_set(instr & 0x0FFF);
             break;
         case 0xB:
-            //jp(v0, addr)
+            cpu_.pc_set((instr & 0x0FFF) + cpu_.registers_get(0));
             break;
         case 0xC:
-            //rnd
+            cpu_.randomize(instr);
             break;
         case 0xD:
-            //drw
+            display_.draw_sprite(instruction[0] & 0x0F, instruction[1] >> 4, cpu_.Ireg_get(), instruction[1] & 0x0F);
             break;
         case 0xE:
             if (instruction[1] == 0x9E)
-                //skp
+                kb_.is_key_pressed(instruction[0] & 0x0F) ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
             else if (instruction[1] == 0xA1)
-                //sknp
+                !kb_.is_key_pressed(instruction[0] & 0x0F) ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
             break;
         case 0xF:
             if (instruction[1] == 0x07)
@@ -107,7 +107,7 @@ void Emulator::fetch_decode_execute()
             else if (instruction[1] == 0x18)
                 //ld(st, vx)
             else if (instruction[1] == 0x1E)
-                //add(I, vx)
+                cpu_.Ireg_set(cpu_.Ireg_get() + cpu_.registers_get(instruction[0] & 0x0F));
             else if (instruction[1] == 0x29)
                 //ld(f, vx)
             else if (instruction[1] == 0x33)

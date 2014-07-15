@@ -5,6 +5,7 @@
 
 # include <cstdint>
 # include <cstdlib>
+# include "RAM.hh"
 
 class CPU
 {
@@ -36,6 +37,14 @@ class CPU
         void ret();
         void call(uint16_t addr);
         void randomize(uint16_t bytes);
+        void add(uint16_t bytes);
+        void sub(uint16_t bytes);
+        void shr(uint16_t bytes);
+        void subn(uint16_t bytes);
+        void shl(uint16_t bytes);
+        void ldb(uint16_t bytes, RAM* ram);
+        void ld55(uint16_t bytes, RAM* ram);
+        void ld65(uint16_t bytes, RAM* ram);
 
     private:
         uint8_t registers_[TAB_SIZE];

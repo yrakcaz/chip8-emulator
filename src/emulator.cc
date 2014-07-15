@@ -24,6 +24,7 @@ void Emulator::fetch_decode_execute()
     uint8_t instruction[2];
     instruction[0] = ram_->ram_get(cpu_.pc_get());
     instruction[1] = ram_->ram_get(cpu_.pc_get() + 1);
+    printf("%x:%x\n", instruction[0], instruction[1]);
     uint16_t instr = instruction[0];
     instr = (instr << 8) | instruction[1];
     cpu_.pc_set(cpu_.pc_get() + 2);
@@ -42,23 +43,26 @@ void Emulator::fetch_decode_execute()
             cpu_.call(instr & 0x0FFF);
             break;
         case 0x3:
-            cpu_.registers_get(instruction[0] & 0x0F) == instruction[1] ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
+            if (cpu_.registers_get(instruction[0] & 0x0F) == instruction[1])
+                cpu_.pc_set(cpu_.pc_get() + 2);
             break;
         case 0x4:
-            cpu_.registers_get(instruction[0] & 0x0F) != instruction[1] ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
+            if (cpu_.registers_get(instruction[0] & 0x0F) != instruction[1])
+                cpu_.pc_set(cpu_.pc_get() + 2);
             break;
         case 0x5:
-            cpu_.registers_get(instruction[0] & 0x0F) == cpu_.registers_get(instruction[1] >> 4) ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
+            if (cpu_.registers_get(instruction[0] & 0x0F) == cpu_.registers_get(instruction[1] >> 4))
+                cpu_.pc_set(cpu_.pc_get() + 2);
             break;
         case 0x6:
-            //ld(vx, byte)
+            cpu_.registers_set(instruction[0] & 0x0F, instruction[1]);
             break;
         case 0x7:
             cpu_.registers_set(instruction[0] & 0x0F, cpu_.registers_get(instruction[0] & 0x0F) + instruction[1]);
             break;
         case 0x8:
             if ((instruction[1] & 0x0F) == 0x0)
-                //ld(vx, vy)
+                cpu_.registers_set(instruction[0] & 0x0F, instruction[1] >> 4);
             else if ((instruction[1] & 0x0F) == 0x1)
                 cpu_.registers_set(instruction[0] & 0x0F, (instruction[0] & 0x0F) | ((instruction[1] >> 4) & 0x0F));
             else if ((instruction[1] & 0x0F) == 0x2)
@@ -66,18 +70,19 @@ void Emulator::fetch_decode_execute()
             else if ((instruction[1] & 0x0F) == 0x3)
                 cpu_.registers_set(instruction[0] & 0x0F, (instruction[0] & 0x0F) ^ ((instruction[1] >> 4) & 0x0F));
             else if ((instruction[1] & 0x0F) == 0x4)
-                //add(vx, vy)
+                cpu_.add(instr);
             else if ((instruction[1] & 0x0F) == 0x5)
-                //sub
+                cpu_.sub(instr);
             else if ((instruction[1] & 0x0F) == 0x6)
-                //shr
+                cpu_.shr(instr);
             else if ((instruction[1] & 0x0F) == 0x7)
-                //subn
+                cpu_.subn(instr);
             else if ((instruction[1] & 0x0F) == 0xE)
-                //shl
+                cpu_.shl(instr);
             break;
         case 0x9:
-            cpu_.registers_get(instruction[0] & 0x0F) != cpu_.registers_get(instruction[1] >> 4) ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
+            if (cpu_.registers_get(instruction[0] & 0x0F) != cpu_.registers_get(instruction[1] >> 4))
+                cpu_.pc_set(cpu_.pc_get() + 2);
             break;
         case 0xA:
             cpu_.Ireg_set(instr & 0x0FFF);
@@ -93,29 +98,33 @@ void Emulator::fetch_decode_execute()
             break;
         case 0xE:
             if (instruction[1] == 0x9E)
-                kb_.is_key_pressed(instruction[0] & 0x0F) ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
+            {
+                if (kb_.is_key_pressed(instruction[0] & 0x0F))
+                    cpu_.pc_set(cpu_.pc_get() + 2);
+            }
             else if (instruction[1] == 0xA1)
-                !kb_.is_key_pressed(instruction[0] & 0x0F) ? cpu_.pc_set(cpu_.pc_get() + 2) : break;
+                if (!kb_.is_key_pressed(instruction[0] & 0x0F))
+                    cpu_.pc_set(cpu_.pc_get() + 2);
             break;
         case 0xF:
             if (instruction[1] == 0x07)
-                //ld(vx, dt)
+                cpu_.registers_set(instruction[0] & 0x0F, cpu_.timer_get());
             else if (instruction[1] == 0x0A)
-                //ld(vx, k)
+                cpu_.registers_set(instruction[0] & 0x0F, kb_.get_key_pressed());
             else if (instruction[1] == 0x15)
-                //ld(dt, vx)
+                cpu_.timer_set(cpu_.registers_get(instruction[0] & 0x0F));
             else if (instruction[1] == 0x18)
-                //ld(st, vx)
+                cpu_.sound_set(cpu_.registers_get(instruction[0] & 0x0F));
             else if (instruction[1] == 0x1E)
                 cpu_.Ireg_set(cpu_.Ireg_get() + cpu_.registers_get(instruction[0] & 0x0F));
             else if (instruction[1] == 0x29)
-                //ld(f, vx)
+                cpu_.Ireg_set((instruction[0] & 0x0F) * 5);
             else if (instruction[1] == 0x33)
-                //ld(b, vx)
+                cpu_.ldb(instr, ram_);
             else if (instruction[1] == 0x55)
-                //ld([i], vx)
+                cpu_.ld55(instr, ram_);
             else if (instruction[1] == 0x65)
-                //ld(vx, [i])
+                cpu_.ld65(instr, ram_);
             break;
     }
 }

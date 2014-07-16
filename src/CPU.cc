@@ -95,8 +95,9 @@ void CPU::ret()
 
 void CPU::call(uint16_t addr)
 {
-    stack_[sp_++] = pc_;
-    pc_ = addr;
+    printf("pc:%x\n", addr);
+    stack_[++sp_] = pc_;
+    pc_ = addr - 1;
 }
 
 void CPU::randomize(uint16_t bytes)

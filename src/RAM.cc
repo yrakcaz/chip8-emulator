@@ -34,20 +34,20 @@ RAM::RAM(char* file)
             ram_[i] = 0;
     }
     int pos = 0x200;
-    std::string line;
-    std::ifstream f(file);
-    if (f.is_open())
+    FILE *f = fopen(file, "r");
+    if (f == (FILE *)0)
     {
-        while (getline(f, line))
-        {
-            for (size_t i = 0; i < line.size(); i++)
-            {
-                ram_[pos] = line[i];
-                pos++;
-            }
-        }
-        f.close();
+        printf("File opening error ocurred. Exiting program.\n");
+        exit(1);
     }
+    int c = fgetc(f);
+    while (c != EOF)
+    {
+        ram_[pos] = (uint8_t)c;
+        pos++;
+        c = fgetc(f);
+    }
+    fclose(f);
 }
 
 RAM::~RAM()

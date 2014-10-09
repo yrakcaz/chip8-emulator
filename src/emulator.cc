@@ -143,7 +143,7 @@ void Emulator::fetch_decode_execute()
             break;
         case 0xD:
             printf("%x:%x:DRW\n", instruction[0], instruction[1]);
-            display_.draw_sprite(instruction[0] & 0x0F, instruction[1] >> 4, cpu_.Ireg_get(), instruction[1] & 0x0F);
+            display_.draw_sprite(cpu_.registers_get(instruction[0] & 0x0F), cpu_.registers_get(instruction[1] >> 4), cpu_.Ireg_get(), instruction[1] & 0x0F);
             break;
         case 0xE:
             if (instruction[1] == 0x9E)

@@ -79,9 +79,11 @@ void Display::putpixel_unit(int x, int y, uint32_t pixel)
     }
 }
 
-void Display::putpixel(int x, int y, int white)
+void Display::putpixel(int x, int y, int white, CPU* cpu)
 {
     int oldc = getpixel_unit((x % SCREEN_WIDTH) * SCALE, (y % SCREEN_HEIGHT) * SCALE) == 0 ? 0 : 1;
+    if (oldc == 1)
+        cpu->registers_set(0xF, 1);
     int val = white ^ oldc ? 0xFF : 0x00;
     uint32_t color = SDL_MapRGB(screen_->format, val, val, val);
     for (int i = x * SCALE; i < (x * SCALE) + SCALE; i++)
@@ -89,15 +91,16 @@ void Display::putpixel(int x, int y, int white)
             putpixel_unit(i % SCREEN_WIDTH, j % SCREEN_HEIGHT, color);
 }
 
-void Display::draw_sprite(int x, int y, int pos, int len)
+void Display::draw_sprite(int x, int y, int pos, int len, CPU* cpu)
 {
     int realX = x;
     int realY = y;
+    cpu->registers_set(0xF, 0);
     for (int i = pos; i < pos + len; i++)
     {
         uint8_t val = ram_->ram_get(i);
         for (int j = 7; j >= 0; j--)
-            putpixel(realX++, realY, (val >> j) & 1);
+            putpixel(realX++, realY, (val >> j) & 1, cpu);
         realX = x;
         realY++;
     }

@@ -207,7 +207,8 @@ void Emulator::fetch_decode_execute()
             }
             break;
         default:
-            printf("youpi!\n");
+            printf("default case oO!\n");
+            break;
     }
     printf("\n");
 }

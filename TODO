@@ -2,7 +2,7 @@ TODO:
 -----
 
 -> Debug Emulator:
-    - TETRIS SEGV
+    - TETRIS/VERS SEGV -> when get_pixel in draw...
     - Schip8?
     - Test games
 

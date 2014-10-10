@@ -81,7 +81,7 @@ void Display::putpixel_unit(int x, int y, uint32_t pixel)
 
 void Display::putpixel(int x, int y, int white, CPU* cpu)
 {
-    int oldc = getpixel_unit(x % SCREEN_WIDTH, y % SCREEN_HEIGHT) == 0 ? 0 : 1;
+    int oldc = getpixel_unit((x % (SCREEN_WIDTH / SCALE)) * SCALE, (y % (SCREEN_HEIGHT / SCALE)) * SCALE) == 0 ? 0 : 1;
     if (oldc == 1)
         cpu->registers_set(0xF, 1);
     int val = white ^ oldc ? 0xFF : 0x00;

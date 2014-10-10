@@ -3,7 +3,7 @@ TODO:
 
 -> Debug Emulator:
     - Keyboard
-    - TETRIS/VERS SEGV -> when get_pixel in draw...
+    - Debug xor on screen
     - Test games
 
 -> Coder l'ASM?

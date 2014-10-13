@@ -1,11 +1,21 @@
 #include "../includes/emulator.hh"
+#include "../includes/disass.hh"
 #include <ctime>
 
 int main(int argc, char **argv)
 {
     srand(time(NULL));
     if (argc == 1 || argc > 2)
-        std::cout << "Invalid arguments: use chip8-emulator -h or --help." << std::endl;
+    {
+        if (argc == 3 && (!(std::string(argv[1])).compare("-d") ||
+                !(std::string(argv[1])).compare("--disass")))
+        {
+            Disass disass(argv[2]);
+            disass.run();
+        }
+        else
+            std::cout << "Invalid arguments: use chip8-emulator -h or --help." << std::endl;
+    }
     else
     {
         if (!(std::string(argv[1])).compare("-h") ||

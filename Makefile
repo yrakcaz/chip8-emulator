@@ -20,7 +20,7 @@ clean:
 	rm -f $(OBJ) $(EXE) $(TAR).tar.bz2
 
 distclean: clean
-	rm -f makefile.rules core
+	rm -f makefile.rules core *.asm
 
 export:
 	git archive HEAD --prefix=$(TAR)/ | bzip2 > $(TAR).tar.bz2

@@ -4,8 +4,10 @@ Disass::Disass()
 {
 }
 
-Disass::Disass(char* file)
+Disass::Disass(char* file, int count)
     : file_(file, std::ifstream::in)
+    , count_(count)
+
 {
 }
 
@@ -17,15 +19,18 @@ Disass::~Disass()
 void Disass::run()
 {
     uint16_t instr;
-    int count = 200;
+
+    for (int i = 0x200; i < count_; i++)
+        file_.get();
 
     do
     {
         instr = (file_.get() << 8) | file_.get();
         char* litteral = treat_instruction(instr);
-        std::cout << count << ":\t" << litteral << std::endl;
+        std::cout << "0x" << std::hex << count_ << ":\t0x" << instr << std::dec
+            << ":\t\t" << litteral << std::endl;
         delete litteral;
-        count += 2;
+        count_ += 2;
     } while (file_.good());
 }
 

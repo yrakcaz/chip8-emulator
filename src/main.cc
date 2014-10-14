@@ -10,7 +10,7 @@ int main(int argc, char **argv)
         if (argc == 3 && (!(std::string(argv[1])).compare("-d") ||
                 !(std::string(argv[1])).compare("--disass")))
         {
-            Disass disass(argv[2]);
+            Disass disass(argv[2], 0x219);
             disass.run();
         }
         else

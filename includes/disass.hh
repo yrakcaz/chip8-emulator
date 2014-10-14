@@ -8,7 +8,7 @@ class Disass
 {
     public:
         Disass();
-        Disass(char* file);
+        Disass(char* file, int count);
         ~Disass();
 
     public:
@@ -19,6 +19,7 @@ class Disass
 
     private:
         std::ifstream file_;
+        int count_;
 };
 
 #endif /* !DISASS_HH */

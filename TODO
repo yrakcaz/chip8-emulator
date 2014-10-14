@@ -4,6 +4,7 @@ TODO:
 -> Debug Emulator:
     - Keyboard                          DONE
     - Debug xor on screen               DONE
+    - Debug TICTAC
     - Test games
 
 -> Coder l'ASM?

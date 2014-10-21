@@ -68,11 +68,11 @@ void Emulator::fetch_decode_execute()
             if ((instruction[1] & 0x0F) == 0x0)
                 cpu_.registers_set(instruction[0] & 0x0F, cpu_.registers_get(instruction[1] >> 4));
             else if ((instruction[1] & 0x0F) == 0x1)
-                cpu_.registers_set(instruction[0] & 0x0F, (instruction[0] & 0x0F) | ((instruction[1] >> 4) & 0x0F));
+                cpu_.registers_set(instruction[0] & 0x0F, cpu_.registers_get(instruction[0] & 0x0F) | cpu_.registers_get((instruction[1] >> 4) & 0x0F));
             else if ((instruction[1] & 0x0F) == 0x2)
-                cpu_.registers_set(instruction[0] & 0x0F, (instruction[0] & 0x0F) & ((instruction[1] >> 4) & 0x0F));
+                cpu_.registers_set(instruction[0] & 0x0F, cpu_.registers_get(instruction[0] & 0x0F) & cpu_.registers_get((instruction[1] >> 4) & 0x0F));
             else if ((instruction[1] & 0x0F) == 0x3)
-                cpu_.registers_set(instruction[0] & 0x0F, (instruction[0] & 0x0F) ^ ((instruction[1] >> 4) & 0x0F));
+                cpu_.registers_set(instruction[0] & 0x0F, cpu_.registers_get(instruction[0] & 0x0F) ^ cpu_.registers_get((instruction[1] >> 4) & 0x0F));
             else if ((instruction[1] & 0x0F) == 0x4)
                 cpu_.add(instr);
             else if ((instruction[1] & 0x0F) == 0x5)
@@ -124,7 +124,7 @@ void Emulator::fetch_decode_execute()
             else if (instruction[1] == 0x1E)
                 cpu_.Ireg_set(cpu_.Ireg_get() + cpu_.registers_get(instruction[0] & 0x0F));
             else if (instruction[1] == 0x29)
-                cpu_.Ireg_set((instruction[0] & 0x0F) * 5);
+                cpu_.Ireg_set(cpu_.registers_get(instruction[0] & 0x0F) * 5);
             else if (instruction[1] == 0x33)
                 cpu_.ldb(instr, ram_);
             else if (instruction[1] == 0x55)

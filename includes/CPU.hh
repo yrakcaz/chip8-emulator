@@ -32,6 +32,7 @@ class CPU
         void sp_set(uint8_t val);
 
         uint16_t stack_get();
+        uint16_t stack_get(int i);
         void stack_set(uint16_t val);
 
         void ret();

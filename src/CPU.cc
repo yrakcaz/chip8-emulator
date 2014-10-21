@@ -83,6 +83,11 @@ uint16_t CPU::stack_get()
     return stack_[sp_];
 }
 
+uint16_t CPU::stack_get(int i)
+{
+    return stack_[i];
+}
+
 void CPU::stack_set(uint16_t val)
 {
     stack_[sp_] = val;

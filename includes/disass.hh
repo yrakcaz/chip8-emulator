@@ -13,8 +13,6 @@ class Disass
 
     public:
         void run();
-
-    private:
         char* treat_instruction(uint16_t instr);
 
     private:

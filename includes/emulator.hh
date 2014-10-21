@@ -4,13 +4,14 @@
 # include "keyboard.hh"
 # include "CPU.hh"
 # include "display.hh"
+# include "debug.hh"
 # include <iostream>
 
 class Emulator
 {
     public:
         Emulator();
-        Emulator(char* file);
+        Emulator(char* file, int dbg);
         ~Emulator();
 
         int run();
@@ -25,6 +26,7 @@ class Emulator
         CPU cpu_;
         RAM* ram_;
         Display display_;
+        Debug dbg_;
 };
 
 #endif /* !EMULATOR_HH */

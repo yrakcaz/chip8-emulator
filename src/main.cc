@@ -13,6 +13,12 @@ int main(int argc, char **argv)
             Disass disass(argv[2], 0x200);
             disass.run();
         }
+        else if (argc == 3 && (!(std::string(argv[1])).compare("-dbg") ||
+                !(std::string(argv[1])).compare("--debug")))
+        {
+            Emulator em(argv[2], 1);
+            em.run();
+        }
         else
             std::cout << "Invalid arguments: use chip8-emulator -h or --help." << std::endl;
     }
@@ -23,7 +29,7 @@ int main(int argc, char **argv)
             std::cout << "Usage : chip8-emulator [ROM]" << std::endl;
         else
         {
-            Emulator em(argv[1]);
+            Emulator em(argv[1], 0);
             return em.run();
         }
         return 0;

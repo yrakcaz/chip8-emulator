@@ -148,14 +148,19 @@ void CPU::shl(uint16_t bytes)
     registers_[(bytes >> 8) & 0x000F] = registers_[(bytes >> 8) & 0x000F] * 2;
 }
 
+void CPU::addi(uint16_t bytes)
+{
+    uint8_t vx = (bytes & 0xF00) >> 8;
+    registers_[0xF] = (Ireg_ + registers_[vx] > 0xFFF) ? 1 : 0;
+    Ireg_ += registers_[vx];
+}
+
 void CPU::ldb(uint16_t bytes, RAM* ram)
 {
     int v = registers_[(bytes >> 8) & 0x000F];
-    ram->ram_set(Ireg_, (v / 100) % 100);
+    ram->ram_set(Ireg_, v / 100);
     ram->ram_set(Ireg_ + 1, (v / 10) % 10);
-    int n = ((v / 100) % 100) + ((v / 10) % 10);
-    v -= n;
-    ram->ram_set(Ireg_ + 2, v);
+    ram->ram_set(Ireg_ + 2, (v % 100) % 10);
 }
 
 void CPU::ld55(uint16_t bytes, RAM* ram)

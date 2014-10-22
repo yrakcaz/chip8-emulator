@@ -43,6 +43,7 @@ class CPU
         void shr(uint16_t bytes);
         void subn(uint16_t bytes);
         void shl(uint16_t bytes);
+        void addi(uint16_t bytes);
         void ldb(uint16_t bytes, RAM* ram);
         void ld55(uint16_t bytes, RAM* ram);
         void ld65(uint16_t bytes, RAM* ram);

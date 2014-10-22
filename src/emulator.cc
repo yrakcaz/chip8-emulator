@@ -39,6 +39,8 @@ void Emulator::fetch_decode_execute()
                 display_.clear();
             else if (instruction[1] == 0xEE)
                 cpu_.ret();
+            else
+                fprintf(stderr, "Error: %#x: unknown opcode!", instr);
             break;
         case 0x1:
             cpu_.pc_set(instr & 0x0FFF);
@@ -83,6 +85,8 @@ void Emulator::fetch_decode_execute()
                 cpu_.subn(instr);
             else if ((instruction[1] & 0x0F) == 0xE)
                 cpu_.shl(instr);
+            else
+                fprintf(stderr, "Error: %#x: unknown opcode!", instr);
             break;
         case 0x9:
             if (cpu_.registers_get(instruction[0] & 0x0F) != cpu_.registers_get(instruction[1] >> 4))
@@ -111,6 +115,8 @@ void Emulator::fetch_decode_execute()
                 if (!kb_.is_key_pressed(cpu_.registers_get(instruction[0] & 0x0F)))
                     cpu_.pc_set(cpu_.pc_get() + 2);
             }
+            else
+                fprintf(stderr, "Error: %#x: unknown opcode!", instr);
             break;
         case 0xF:
             if (instruction[1] == 0x07)
@@ -122,7 +128,7 @@ void Emulator::fetch_decode_execute()
             else if (instruction[1] == 0x18)
                 cpu_.sound_set(cpu_.registers_get(instruction[0] & 0x0F));
             else if (instruction[1] == 0x1E)
-                cpu_.Ireg_set(cpu_.Ireg_get() + cpu_.registers_get(instruction[0] & 0x0F));
+                cpu_.addi(instr);
             else if (instruction[1] == 0x29)
                 cpu_.Ireg_set(cpu_.registers_get(instruction[0] & 0x0F) * 5);
             else if (instruction[1] == 0x33)
@@ -131,8 +137,11 @@ void Emulator::fetch_decode_execute()
                 cpu_.ld55(instr, ram_);
             else if (instruction[1] == 0x65)
                 cpu_.ld65(instr, ram_);
+            else
+                fprintf(stderr, "Error: %#x: unknown opcode!", instr);
             break;
         default:
+            fprintf(stderr, "Error: %#x: unknown opcode!", instr);
             break;
     }
 }

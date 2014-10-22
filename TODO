@@ -9,10 +9,14 @@ TODO:
 
 -> Update help/usage!
 
--> Rendre le code propre!!!
+-> Clean the code!!!
+
+-> Clean valgrind?
 
 -> Coder l'ASM?
 
 -> Schip8?
 
 -> Coder debugger                       DONE (little step by step, could be better)
+    |
+    --> Add system to display RAM

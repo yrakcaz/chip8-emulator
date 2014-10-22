@@ -18,6 +18,7 @@ Emulator::Emulator(char* file, int dbg)
 
 Emulator::~Emulator()
 {
+    delete ram_;
 }
 
 void Emulator::fetch_decode_execute()

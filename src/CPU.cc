@@ -129,8 +129,8 @@ void CPU::sub(uint16_t bytes)
 
 void CPU::shr(uint16_t bytes)
 {
-    registers_[(bytes >> 8) & 0x000F] % 2 == 1 ? registers_[0xF] = 1 : registers_[0xF] = 0;
-    registers_[(bytes >> 8) & 0x000F] = registers_[(bytes >> 8) & 0x000F] / 2;
+    (registers_[(bytes >> 8) & 0x000F] & 1) ? registers_[0xF] = 1 : registers_[0xF] = 0;
+    registers_[(bytes >> 8) & 0x000F] >>= 1;
 }
 
 void CPU::subn(uint16_t bytes)
@@ -144,8 +144,8 @@ void CPU::subn(uint16_t bytes)
 
 void CPU::shl(uint16_t bytes)
 {
-    registers_[(bytes >> 8) & 0x000F] % 2 == 1 ? registers_[0xF] = 1 : registers_[0xF] = 0;
-    registers_[(bytes >> 8) & 0x000F] = registers_[(bytes >> 8) & 0x000F] * 2;
+    (registers_[(bytes >> 8) & 0x000F] & 0x80) ? registers_[0xF] = 1 : registers_[0xF] = 0;
+    registers_[(bytes >> 8) & 0x000F] <<= 1;
 }
 
 void CPU::addi(uint16_t bytes)
@@ -165,14 +165,14 @@ void CPU::ldb(uint16_t bytes, RAM* ram)
 
 void CPU::ld55(uint16_t bytes, RAM* ram)
 {
-    int v = (bytes >> 8) & 0x000F;
-    for (int i = 0; i < v; i++)
+    uint8_t vx = (bytes & 0x0F00) >> 8;
+    for (int i = 0; i <= vx; i++)
         ram->ram_set(Ireg_ + i, registers_[i]);
 }
 
 void CPU::ld65(uint16_t bytes, RAM* ram)
 {
-    int v = (bytes >> 8) & 0x000F;
-    for (int i = 0; i < v; i++)
+    uint8_t vx = (bytes & 0x0F00) >> 8;
+    for (int i = 0; i <= vx; i++)
         registers_[i] = ram->ram_get(Ireg_ + i);
 }

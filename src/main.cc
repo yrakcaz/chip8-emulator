@@ -26,7 +26,11 @@ int main(int argc, char **argv)
     {
         if (!(std::string(argv[1])).compare("-h") ||
             !(std::string(argv[1])).compare("--help"))
-            std::cout << "Usage : chip8-emulator [ROM]" << std::endl;
+        {
+            std::cout << "Usage : chip8-emulator [options] [file]" << std::endl;
+            std::cout << "\tOptions :\t-d, --disass\tDisassemble ROM" << std::endl;
+            std::cout << "\t\t\t-dbg, --debug\tExecution step by step" << std::endl;
+        }
         else
         {
             Emulator em(argv[1], 0);

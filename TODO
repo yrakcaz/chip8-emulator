@@ -5,20 +5,20 @@ TODO:
     - Keyboard                          DONE
     - Debug xor on screen               DONE
     - Debug TICTAC                      DONE
-    - Test games
+    - Test games                        DONE
 
--> Update help/usage/readme!
+-> Update help/usage/readme!            DONE
 
 -> Clean the code!!!
 
 -> Clean valgrind?
 
--> Coder l'ASM?
+-> Coder l'ASM? -> update readme/help
 
--> Change name to chip8
+-> Schip8? -> update readme
 
--> Schip8?
-
--> Coder debugger                       DONE (little step by step, could be better)
+-> Coder debugger                       DONE
     |
-    --> Add system to display RAM
+    --> Add system to display RAM -> update readme/help
+
+-> INSTALL?

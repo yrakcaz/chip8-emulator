@@ -3,6 +3,7 @@
 
 # include <fstream>
 # include <iostream>
+# include "RAM.hh"
 
 class Disass
 {

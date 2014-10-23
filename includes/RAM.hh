@@ -7,6 +7,8 @@
 # include <fstream>
 # include <string>
 
+# define RAM_BEGIN 0x200
+
 # define RAM_SIZE       4096
 # define SPRITES_SIZE   80
 

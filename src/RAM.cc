@@ -33,7 +33,7 @@ RAM::RAM(char* file)
         else
             ram_[i] = 0;
     }
-    int pos = 0x200;
+    int pos = RAM_BEGIN;
     FILE *f = fopen(file, "r");
     if (f == (FILE *)0)
     {

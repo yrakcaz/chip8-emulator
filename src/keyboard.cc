@@ -4,22 +4,22 @@ Keyboard::Keyboard()
 {
     for (int i = 0; i < 256; i++)
         key_map_[i] = -1;
-    key_map_['a'] = 0x01;
-    key_map_['z'] = 0x02;
-    key_map_['e'] = 0x03;
-    key_map_['q'] = 0x04;
-    key_map_['s'] = 0x05;
-    key_map_['d'] = 0x06;
-    key_map_['w'] = 0x07;
-    key_map_['x'] = 0x08;
-    key_map_['c'] = 0x09;
-    key_map_[' '] = 0x00;
-    key_map_['t'] = 0x0A;
-    key_map_['y'] = 0x0B;
-    key_map_['u'] = 0x0C;
-    key_map_['i'] = 0x0D;
-    key_map_['o'] = 0x0E;
-    key_map_['p'] = 0x0F;
+    key_map_['a'] = 0x1;
+    key_map_['z'] = 0x2;
+    key_map_['e'] = 0x3;
+    key_map_['q'] = 0x4;
+    key_map_['s'] = 0x5;
+    key_map_['d'] = 0x6;
+    key_map_['w'] = 0x7;
+    key_map_['x'] = 0x8;
+    key_map_['c'] = 0x9;
+    key_map_[' '] = 0x0;
+    key_map_['t'] = 0xA;
+    key_map_['y'] = 0xB;
+    key_map_['u'] = 0xC;
+    key_map_['i'] = 0xD;
+    key_map_['o'] = 0xE;
+    key_map_['p'] = 0xF;
     key_map_[SDLK_ESCAPE] = SDLK_ESCAPE;
 }
 

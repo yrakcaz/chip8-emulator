@@ -20,7 +20,7 @@ void Disass::run()
 {
     uint16_t instr;
 
-    for (int i = 0x200; i < count_; i++)
+    for (int i = RAM_BEGIN; i < count_; i++)
         file_.get();
 
     do

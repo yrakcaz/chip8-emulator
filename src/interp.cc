@@ -19,6 +19,8 @@ Interp::~Interp()
 std::string Interp::normalize(std::string line)
 {
     std::string ret;
+    int count = 0;
+    int begin_flag = 0;
     for (size_t i = 0; i < line.size(); i++)
     {
         if (line[i] == '#' || line[i] == '\n')
@@ -26,7 +28,12 @@ std::string Interp::normalize(std::string line)
         if ((line[i] == ' ' || line[i] == '\t') &&
                 (line[i + 1] == ' ' || line[i + 1] == '\t'))
             continue;
-        ret += line[i];
+        if ((line[i] < 'A' || line[i] > 'Z') && !begin_flag)
+            continue;
+        if ((line[i] >= 'A' && line[i] <= 'Z') && !begin_flag)
+            begin_flag++;
+        ret += line[i] == '\t' ? ' ' : line[i];
+        count++;
     }
     return ret;
 }
@@ -36,6 +43,7 @@ void Interp::interpret()
     for (std::string line; getline(in_, line);)
     {
         line = normalize(line);
+        out_ << line << std::endl;
         //treat normalized line!
     }
 }

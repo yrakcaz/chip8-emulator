@@ -1,5 +1,6 @@
 #include "../includes/emulator.hh"
 #include "../includes/disass.hh"
+#include "../includes/interp.hh"
 #include <ctime>
 
 int main(int argc, char **argv)
@@ -18,6 +19,12 @@ int main(int argc, char **argv)
         {
             Emulator em(argv[2], 1);
             em.run();
+        }
+        else if (argc == 3 && (!(std::string(argv[1])).compare("-i") ||
+                !(std::string(argv[1])).compare("--interpret")))
+        {
+            Interp interpreter(argv[2]);
+            interpreter.interpret();
         }
         else
             std::cout << "Invalid arguments: use chip8-emulator -h or --help." << std::endl;

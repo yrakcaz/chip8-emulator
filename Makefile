@@ -1,7 +1,8 @@
 EXE=chip8-emulator
 CXX=g++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++11 -pedantic
-SRC=src/keyboard.cc src/RAM.cc src/CPU.cc src/display.cc src/emulator.cc src/disass.cc src/debug.cc src/interp.cc src/main.cc
+SRC=src/keyboard.cc src/RAM.cc src/CPU.cc src/display.cc src/emulator.cc \
+	src/disass.cc src/debug.cc src/instruction.cc src/interp.cc src/main.cc
 LDFLAGS=-lSDL
 OBJ=$(SRC:.cc=.o)
 TAR=yrakcaz-chip8-emulator

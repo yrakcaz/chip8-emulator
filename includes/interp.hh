@@ -6,6 +6,8 @@
 # include <cstring>
 # include <string>
 
+# include "instruction.hh"
+
 class Interp
 {
     public:

@@ -40,10 +40,18 @@ std::string Interp::normalize(std::string line)
 
 void Interp::interpret()
 {
-    for (std::string line; getline(in_, line);)
+    std::string line;
+    int l = 0;
+    while (getline(in_, line))
     {
+        l++;
         line = normalize(line);
-        out_ << line << std::endl;
-        //treat normalized line!
+        if (!line.compare(""))
+            continue;
+        Instruction instr(line);
+        uint16_t opcode = instr.get_opcode();
+        std::cout << std::hex << opcode << std::dec << std::endl;
+        if (opcode == 0xFFFF)
+            std::cerr << "Line " << l << ": Parse Error!" << std::endl;
     }
 }

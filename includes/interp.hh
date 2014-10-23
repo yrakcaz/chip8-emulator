@@ -17,6 +17,9 @@ class Interp
         void interpret();
 
     private:
+        std::string normalize(std::string line);
+
+    private:
         std::ifstream in_;
         std::ofstream out_;
 };

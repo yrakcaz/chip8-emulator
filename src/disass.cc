@@ -26,6 +26,8 @@ void Disass::run()
     do
     {
         instr = (file_.get() << 8) | file_.get();
+        if (instr == 0xFFFF)
+            continue;
         char* litteral = treat_instruction(instr);
         std::cout << "0x" << std::hex << count_ << ":\t0x" << instr << std::dec
             << ":\t\t" << litteral << std::endl;

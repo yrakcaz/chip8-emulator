@@ -15,7 +15,7 @@ class Instruction
 
     private:
         void cut_line(std::string line);
-        uint16_t treat_xnnn(uint16_t x);
+        uint16_t treat_xnnn(uint16_t x, int i);
 
     private:
         std::string* argv_;

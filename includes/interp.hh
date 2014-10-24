@@ -24,6 +24,7 @@ class Interp
     private:
         std::ifstream in_;
         std::ofstream out_;
+        char* file_;
 };
 
 #endif /* !INTERP_HH */

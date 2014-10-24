@@ -7,6 +7,7 @@ Interp::Interp()
 Interp::Interp(char* file)
     : in_(file, std::ifstream::in)
     , out_(strcat(file, ".out"), std::ofstream::out)
+    , file_(file)
 {
 }
 
@@ -42,6 +43,7 @@ void Interp::interpret()
 {
     std::string line;
     int l = 0;
+    int rm_flag = 0;
     while (getline(in_, line))
     {
         l++;
@@ -50,8 +52,15 @@ void Interp::interpret()
             continue;
         Instruction instr(line);
         uint16_t opcode = instr.get_opcode();
-        std::cout << std::hex << opcode << std::dec << std::endl;
         if (opcode == 0xFFFF)
+        {
             std::cerr << "Line " << l << ": Parse Error!" << std::endl;
+            rm_flag = 1;
+        }
+
+        //DEBUG:
+        std::cout << std::hex << opcode << std::dec << std::endl;
     }
+    if (rm_flag)
+        remove(file_);
 }

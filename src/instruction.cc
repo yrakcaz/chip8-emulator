@@ -37,14 +37,14 @@ void Instruction::cut_line(std::string line)
     }
 }
 
-uint16_t Instruction::treat_xnnn(uint16_t x)
+uint16_t Instruction::treat_xnnn(uint16_t x, int i)
 {
-    if (argc_ < 2)
+    if (argc_ < i + 1)
         return 0xFFFF;
     else
     {
         uint16_t ret = (x << 12) & 0xF000;
-        ret |= std::stoi(argv_[1], nullptr, 16);
+        ret |= std::stoi(argv_[i], nullptr, 16);
         return ret;
     }
 }
@@ -56,7 +56,16 @@ uint16_t Instruction::get_opcode()
     else if (!argv_[0].compare("RET") || !argv_[0].compare("ret"))
         return 0x00EE;
     else if (!argv_[0].compare("SYS") || !argv_[0].compare("sys"))
-        return treat_xnnn(0x0);
+        return treat_xnnn(0x0, 1);
+    else if (!argv_[0].compare("JP") || !argv_[0].compare("jp"))
+    {
+        if (argc_ == 2)
+            treat_xnnn(0x1, 1);
+        else if (argc_ == 3)
+            treat_xnnn(0xB, 2);
+        else
+            return 0xFFFF;
+    }
     else
         return 0xFFFF;
 }

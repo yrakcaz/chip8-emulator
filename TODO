@@ -18,6 +18,8 @@ TODO:
     --> update readme/help (toutes les lettres en majuscule)
     |
     --> verif parsing hexa/','
+    |
+    --> debug MISSILE
 
 -> Schip8? -> update readme
 
@@ -26,5 +28,7 @@ TODO:
 -> Coder debugger                       DONE
     |
     --> Add system to display RAM -> update readme/help
+    |
+    --> Breakpoint?
 
 -> INSTALL?

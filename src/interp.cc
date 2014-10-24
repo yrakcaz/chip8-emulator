@@ -59,8 +59,6 @@ void Interp::interpret()
         }
         out_.write(((char*)&opcode) + 1, 1);
         out_.write((char*)&opcode, 1);
-        //DEBUG:
-        fprintf(stdout, "0x%4x\n", opcode);
     }
     if (rm_flag)
         remove(file_);

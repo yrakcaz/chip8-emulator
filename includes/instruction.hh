@@ -24,6 +24,8 @@ class Instruction
         uint16_t treat_se();
         uint16_t treat_sne();
         uint16_t treat_ld();
+        uint16_t treat_add();
+        uint16_t treat_drw();
 
     private:
         std::string* argv_;

@@ -158,6 +158,40 @@ uint16_t Instruction::treat_ld()
         return 0xFFFF;
 }
 
+uint16_t Instruction::treat_add()
+{
+    if (argv_[1][0] == 'V')
+    {
+        if (argv_[2][0] == 'V')
+            return treat_xy(0x8004, argv_[1][1], argv_[2][1]);
+        else
+            return treat_xkk(0x7000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
+    }
+    else if (argv_[2][0] == 'V')
+    {
+        if (!argv_[1].compare("I"))
+            return treat_x(0xF01E, argv_[2][1]);
+        else
+            return 0xFFFF;
+    }
+    else
+        return 0xFFFF;
+}
+
+uint16_t Instruction::treat_drw()
+{
+    uint16_t ret = 0xD000;
+    uint16_t x = get_hex(argv_[1][1]);
+    uint16_t y = get_hex(argv_[2][1]);
+    uint16_t n = get_hex(argv_[3][0] == '0' ? argv_[3][2] : argv_[3][0]);
+    x <<= 8;
+    y <<= 4;
+    ret |= x;
+    ret |= y;
+    ret |= n;
+    return ret;
+}
+
 uint16_t Instruction::get_opcode()
 {
     if (!argv_[0].compare("CLS"))
@@ -176,6 +210,30 @@ uint16_t Instruction::get_opcode()
         return treat_sne();
     else if (!argv_[0].compare("LD") && argc_ == 3)
         return treat_ld();
+    else if (!argv_[0].compare("ADD") && argc_ == 3)
+        return treat_add();
+    else if (!argv_[0].compare("OR") && argc_ == 3)
+        return treat_xy(0x8001, argv_[1][1], argv_[2][1]);
+    else if (!argv_[0].compare("AND") && argc_ == 3)
+        return treat_xy(0x8002, argv_[1][1], argv_[2][1]);
+    else if (!argv_[0].compare("XOR") && argc_ == 3)
+        return treat_xy(0x8003, argv_[1][1], argv_[2][1]);
+    else if (!argv_[0].compare("SUB") && argc_ == 3)
+        return treat_xy(0x8005, argv_[1][1], argv_[2][1]);
+    else if (!argv_[0].compare("SHR") && argc_ == 3)
+        return treat_xy(0x8006, argv_[1][1], argv_[2][1]);
+    else if (!argv_[0].compare("SUBN") && argc_ == 3)
+        return treat_xy(0x8007, argv_[1][1], argv_[2][1]);
+    else if (!argv_[0].compare("SHL") && argc_ == 3)
+        return treat_xy(0x800E, argv_[1][1], argv_[2][1]);
+    else if (!argv_[0].compare("RND") && argc_ == 3)
+        return treat_xkk(0xC000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
+    else if (!argv_[0].compare("DRW") && argc_ == 4)
+            return treat_drw();
+    else if (!argv_[0].compare("SKP") && argc_ == 2)
+            return treat_x(0xE09E, argv_[1][1]);
+    else if (!argv_[0].compare("SKNP") && argc_ == 2)
+            return treat_x(0xE0A1, argv_[1][1]);
     else
         return 0xFFFF;
 }

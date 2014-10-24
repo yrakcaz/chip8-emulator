@@ -37,6 +37,21 @@ void Instruction::cut_line(std::string line)
     }
 }
 
+uint16_t Instruction::get_hex(char c)
+{
+    uint16_t ret;
+    if (c > '9')
+    {
+        if (c >= 'a' && c <= 'z')
+            ret = 10 + (c - 'a');
+        else
+            ret = 10 + (c - 'A');
+    }
+    else
+        ret = c - '0';
+    return ret;
+}
+
 uint16_t Instruction::treat_xnnn(uint16_t x, int i)
 {
     if (argc_ < i + 1)
@@ -49,27 +64,31 @@ uint16_t Instruction::treat_xnnn(uint16_t x, int i)
     }
 }
 
-uint16_t Instruction::treat_xy(uint16_t around, uint16_t x, uint16_t y)
+uint16_t Instruction::treat_xy(uint16_t around, char x, char y)
 {
+    uint16_t vx = get_hex(x);
+    uint16_t vy = get_hex(y);
     uint16_t ret = around & 0xF000;
-    ret |= (x & 0x000F) << 8;
-    ret |= (y & 0x000F) << 4;
+    ret |= (vx & 0x000F) << 8;
+    ret |= (vy & 0x000F) << 4;
     ret |= around & 0x000F;
     return ret;
 }
 
-uint16_t Instruction::treat_xkk(uint16_t around, uint16_t x, uint16_t kk)
+uint16_t Instruction::treat_xkk(uint16_t around, char x, uint16_t kk)
 {
+    uint16_t vx = get_hex(x);
     uint16_t ret = around & 0xF000;
-    ret |= (x & 0x000F) << 8;
+    ret |= (vx & 0x000F) << 8;
     ret |= (kk & 0x00FF);
     return ret;
 }
 
-uint16_t Instruction::treat_x(uint16_t around, uint16_t x)
+uint16_t Instruction::treat_x(uint16_t around, char x)
 {
+    uint16_t vx = get_hex(x);
     uint16_t ret = around & 0xF0FF;
-    ret |= (x & 0x000F) << 8;
+    ret |= (vx & 0x000F) << 8;
     return ret;
 }
 
@@ -86,9 +105,9 @@ uint16_t Instruction::treat_jp()
 uint16_t Instruction::treat_se()
 {
     if (argv_[1][0] == 'V' && argv_[2][0] =='V')
-        return treat_xy(0x5000, argv_[1][1] - '0', argv_[2][1] - '0');
+        return treat_xy(0x5000, argv_[1][1], argv_[2][1]);
     else if (argv_[1][0] == 'V')
-        return treat_xkk(0x3000, argv_[1][1] - '0', std::stoi(argv_[2], nullptr, 16));
+        return treat_xkk(0x3000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
     else
         return 0xFFFF;
 }
@@ -96,9 +115,9 @@ uint16_t Instruction::treat_se()
 uint16_t Instruction::treat_sne()
 {
     if (argv_[1][0] == 'V' && argv_[2][0] =='V')
-        return treat_xy(0x9000, argv_[1][1] - '0', argv_[2][1] - '0');
+        return treat_xy(0x9000, argv_[1][1], argv_[2][1]);
     else if (argv_[1][0] == 'V')
-        return treat_xkk(0x4000, argv_[1][1] - '0', std::stoi(argv_[2], nullptr, 16));
+        return treat_xkk(0x4000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
     else
         return 0xFFFF;
 }
@@ -106,32 +125,32 @@ uint16_t Instruction::treat_sne()
 uint16_t Instruction::treat_ld()
 {
     if (argv_[1][0] == 'V' && argv_[2][0] == 'V')
-        return treat_xy(0x8000, argv_[1][1] - '0', argv_[2][1] - '0');
+        return treat_xy(0x8000, argv_[1][1], argv_[2][1]);
     else if (argv_[1][0] == 'I')
         return treat_xnnn(0xA, 2);
     else if (argv_[1][0] == 'V')
     {
         if (!argv_[2].compare("DT"))
-            return treat_x(0xF007, argv_[1][1] - '0');
+            return treat_x(0xF007, argv_[1][1]);
         else if (!argv_[2].compare("K"))
-            return treat_x(0xF00A, argv_[1][1] - '0');
+            return treat_x(0xF00A, argv_[1][1]);
         else if (!argv_[2].compare("[I]"))
-            return treat_x(0xF065, argv_[1][1] - '0');
+            return treat_x(0xF065, argv_[1][1]);
         else
-            return treat_xkk(0x6000, argv_[1][1] - '0', std::stoi(argv_[2], nullptr, 16));
+            return treat_xkk(0x6000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
     }
     else if (argv_[2][0] == 'V')
     {
         if (!argv_[1].compare("DT"))
-            return treat_x(0xF015, argv_[1][1] - '0');
+            return treat_x(0xF015, argv_[2][1]);
         else if (!argv_[1].compare("ST"))
-            return treat_x(0xF018, argv_[1][1] - '0');
+            return treat_x(0xF018, argv_[2][1]);
         else if (!argv_[1].compare("F"))
-            return treat_x(0xF029, argv_[1][1] - '0');
+            return treat_x(0xF029, argv_[2][1]);
         else if (!argv_[1].compare("B"))
-            return treat_x(0xF033, argv_[1][1] - '0');
+            return treat_x(0xF033, argv_[2][1]);
         else if (!argv_[1].compare("[I]"))
-            return treat_x(0xF055, argv_[1][1] - '0');
+            return treat_x(0xF055, argv_[2][1]);
         else
             return 0xFFFF;
     }

@@ -57,9 +57,10 @@ void Interp::interpret()
             std::cerr << "Line " << l << ": Parse Error!" << std::endl;
             rm_flag = 1;
         }
-
+        out_.write(((char*)&opcode) + 1, 1);
+        out_.write((char*)&opcode, 1);
         //DEBUG:
-        std::cout << std::hex << opcode << std::dec << std::endl;
+        fprintf(stdout, "0x%4x\n", opcode);
     }
     if (rm_flag)
         remove(file_);

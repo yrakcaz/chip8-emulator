@@ -6,5 +6,5 @@ do
     ../../chip8-emulator -i $i.asm;
     diff $i $i.asm.out;
     echo $?;
-    rm -f ../emu/*asm*;
+    rm -f ../emu/*.asm;
 done

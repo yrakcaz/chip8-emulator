@@ -65,7 +65,7 @@ char* Disass::treat_instruction(uint16_t instr)
             sprintf(ret, "SNE\tV%x, %#x", instruction[0] & 0x0F, instruction[1]);
             break;
         case 0x5:
-            sprintf(ret, "SE\tV%x, V%x", instruction[0] & 0x0F, (instruction[1] >> 4) & 0x0F);
+            sprintf(ret, "SE\tV%x, V%x", instruction[0] & 0x0F, (instruction[1] & 0xF0) >> 4);
             break;
         case 0x6:
             sprintf(ret, "LD\tV%x, %#x", instruction[0] & 0x0F, instruction[1]);

@@ -52,7 +52,7 @@ uint16_t Instruction::get_hex(char c)
     return ret;
 }
 
-uint16_t Instruction::treat_xnnn(uint16_t x, int i)
+uint16_t Instruction::handle_xnnn(uint16_t x, int i)
 {
     if (argc_ < i + 1)
         return 0xFFFF;
@@ -64,7 +64,7 @@ uint16_t Instruction::treat_xnnn(uint16_t x, int i)
     }
 }
 
-uint16_t Instruction::treat_xy(uint16_t around, char x, char y)
+uint16_t Instruction::handle_xy(uint16_t around, char x, char y)
 {
     uint16_t vx = get_hex(x);
     uint16_t vy = get_hex(y);
@@ -75,7 +75,7 @@ uint16_t Instruction::treat_xy(uint16_t around, char x, char y)
     return ret;
 }
 
-uint16_t Instruction::treat_xkk(uint16_t around, char x, uint16_t kk)
+uint16_t Instruction::handle_xkk(uint16_t around, char x, uint16_t kk)
 {
     uint16_t vx = get_hex(x);
     uint16_t ret = around & 0xF000;
@@ -84,7 +84,7 @@ uint16_t Instruction::treat_xkk(uint16_t around, char x, uint16_t kk)
     return ret;
 }
 
-uint16_t Instruction::treat_x(uint16_t around, char x)
+uint16_t Instruction::handle_x(uint16_t around, char x)
 {
     uint16_t vx = get_hex(x);
     uint16_t ret = around & 0xF0FF;
@@ -92,65 +92,65 @@ uint16_t Instruction::treat_x(uint16_t around, char x)
     return ret;
 }
 
-uint16_t Instruction::treat_jp()
+uint16_t Instruction::handle_jp()
 {
     if (argc_ == 2)
-        return treat_xnnn(0x1, 1);
+        return handle_xnnn(0x1, 1);
     else if (argc_ == 3 && !argv_[1].compare("V0"))
-        return treat_xnnn(0xB, 2);
+        return handle_xnnn(0xB, 2);
     else
         return 0xFFFF;
 }
 
-uint16_t Instruction::treat_se()
+uint16_t Instruction::handle_se()
 {
     if (argv_[1][0] == 'V' && argv_[2][0] =='V')
-        return treat_xy(0x5000, argv_[1][1], argv_[2][1]);
+        return handle_xy(0x5000, argv_[1][1], argv_[2][1]);
     else if (argv_[1][0] == 'V')
-        return treat_xkk(0x3000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
+        return handle_xkk(0x3000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
     else
         return 0xFFFF;
 }
 
-uint16_t Instruction::treat_sne()
+uint16_t Instruction::handle_sne()
 {
     if (argv_[1][0] == 'V' && argv_[2][0] =='V')
-        return treat_xy(0x9000, argv_[1][1], argv_[2][1]);
+        return handle_xy(0x9000, argv_[1][1], argv_[2][1]);
     else if (argv_[1][0] == 'V')
-        return treat_xkk(0x4000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
+        return handle_xkk(0x4000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
     else
         return 0xFFFF;
 }
 
-uint16_t Instruction::treat_ld()
+uint16_t Instruction::handle_ld()
 {
     if (argv_[1][0] == 'V' && argv_[2][0] == 'V')
-        return treat_xy(0x8000, argv_[1][1], argv_[2][1]);
+        return handle_xy(0x8000, argv_[1][1], argv_[2][1]);
     else if (argv_[1][0] == 'I')
-        return treat_xnnn(0xA, 2);
+        return handle_xnnn(0xA, 2);
     else if (argv_[1][0] == 'V')
     {
         if (!argv_[2].compare("DT"))
-            return treat_x(0xF007, argv_[1][1]);
+            return handle_x(0xF007, argv_[1][1]);
         else if (!argv_[2].compare("K"))
-            return treat_x(0xF00A, argv_[1][1]);
+            return handle_x(0xF00A, argv_[1][1]);
         else if (!argv_[2].compare("[I]"))
-            return treat_x(0xF065, argv_[1][1]);
+            return handle_x(0xF065, argv_[1][1]);
         else
-            return treat_xkk(0x6000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
+            return handle_xkk(0x6000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
     }
     else if (argv_[2][0] == 'V')
     {
         if (!argv_[1].compare("DT"))
-            return treat_x(0xF015, argv_[2][1]);
+            return handle_x(0xF015, argv_[2][1]);
         else if (!argv_[1].compare("ST"))
-            return treat_x(0xF018, argv_[2][1]);
+            return handle_x(0xF018, argv_[2][1]);
         else if (!argv_[1].compare("F"))
-            return treat_x(0xF029, argv_[2][1]);
+            return handle_x(0xF029, argv_[2][1]);
         else if (!argv_[1].compare("B"))
-            return treat_x(0xF033, argv_[2][1]);
+            return handle_x(0xF033, argv_[2][1]);
         else if (!argv_[1].compare("[I]"))
-            return treat_x(0xF055, argv_[2][1]);
+            return handle_x(0xF055, argv_[2][1]);
         else
             return 0xFFFF;
     }
@@ -158,19 +158,19 @@ uint16_t Instruction::treat_ld()
         return 0xFFFF;
 }
 
-uint16_t Instruction::treat_add()
+uint16_t Instruction::handle_add()
 {
     if (argv_[1][0] == 'V')
     {
         if (argv_[2][0] == 'V')
-            return treat_xy(0x8004, argv_[1][1], argv_[2][1]);
+            return handle_xy(0x8004, argv_[1][1], argv_[2][1]);
         else
-            return treat_xkk(0x7000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
+            return handle_xkk(0x7000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
     }
     else if (argv_[2][0] == 'V')
     {
         if (!argv_[1].compare("I"))
-            return treat_x(0xF01E, argv_[2][1]);
+            return handle_x(0xF01E, argv_[2][1]);
         else
             return 0xFFFF;
     }
@@ -178,7 +178,7 @@ uint16_t Instruction::treat_add()
         return 0xFFFF;
 }
 
-uint16_t Instruction::treat_drw()
+uint16_t Instruction::handle_drw()
 {
     uint16_t ret = 0xD000;
     uint16_t x = get_hex(argv_[1][1]);
@@ -199,41 +199,41 @@ uint16_t Instruction::get_opcode()
     else if (!argv_[0].compare("RET"))
         return 0x00EE;
     else if (!argv_[0].compare("SYS"))
-        return treat_xnnn(0x0, 1);
+        return handle_xnnn(0x0, 1);
     else if (!argv_[0].compare("JP"))
-        return treat_jp();
+        return handle_jp();
     else if (!argv_[0].compare("CALL"))
-        return treat_xnnn(0x2, 1);
+        return handle_xnnn(0x2, 1);
     else if (!argv_[0].compare("SE") && argc_ == 3)
-        return treat_se();
+        return handle_se();
     else if (!argv_[0].compare("SNE") && argc_ == 3)
-        return treat_sne();
+        return handle_sne();
     else if (!argv_[0].compare("LD") && argc_ == 3)
-        return treat_ld();
+        return handle_ld();
     else if (!argv_[0].compare("ADD") && argc_ == 3)
-        return treat_add();
+        return handle_add();
     else if (!argv_[0].compare("OR") && argc_ == 3)
-        return treat_xy(0x8001, argv_[1][1], argv_[2][1]);
+        return handle_xy(0x8001, argv_[1][1], argv_[2][1]);
     else if (!argv_[0].compare("AND") && argc_ == 3)
-        return treat_xy(0x8002, argv_[1][1], argv_[2][1]);
+        return handle_xy(0x8002, argv_[1][1], argv_[2][1]);
     else if (!argv_[0].compare("XOR") && argc_ == 3)
-        return treat_xy(0x8003, argv_[1][1], argv_[2][1]);
+        return handle_xy(0x8003, argv_[1][1], argv_[2][1]);
     else if (!argv_[0].compare("SUB") && argc_ == 3)
-        return treat_xy(0x8005, argv_[1][1], argv_[2][1]);
+        return handle_xy(0x8005, argv_[1][1], argv_[2][1]);
     else if (!argv_[0].compare("SHR") && argc_ == 3)
-        return treat_xy(0x8006, argv_[1][1], argv_[2][1]);
+        return handle_xy(0x8006, argv_[1][1], argv_[2][1]);
     else if (!argv_[0].compare("SUBN") && argc_ == 3)
-        return treat_xy(0x8007, argv_[1][1], argv_[2][1]);
+        return handle_xy(0x8007, argv_[1][1], argv_[2][1]);
     else if (!argv_[0].compare("SHL") && argc_ == 3)
-        return treat_xy(0x800E, argv_[1][1], argv_[2][1]);
+        return handle_xy(0x800E, argv_[1][1], argv_[2][1]);
     else if (!argv_[0].compare("RND") && argc_ == 3)
-        return treat_xkk(0xC000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
+        return handle_xkk(0xC000, argv_[1][1], std::stoi(argv_[2], nullptr, 16));
     else if (!argv_[0].compare("DRW") && argc_ == 4)
-            return treat_drw();
+            return handle_drw();
     else if (!argv_[0].compare("SKP") && argc_ == 2)
-            return treat_x(0xE09E, argv_[1][1]);
+            return handle_x(0xE09E, argv_[1][1]);
     else if (!argv_[0].compare("SKNP") && argc_ == 2)
-            return treat_x(0xE0A1, argv_[1][1]);
+            return handle_x(0xE0A1, argv_[1][1]);
     else
         return 0xFFFF;
 }

@@ -1,6 +1,10 @@
 TODO:
 -----
 
+-> FIX CONFIGURE SCRIPT!!
+
+-> CHANGE LICENSE??
+
 -> Debug Emulator:
     - Keyboard                          DONE
     - Debug xor on screen               DONE
@@ -9,23 +13,22 @@ TODO:
 
 -> Update help/usage/readme!            DONE
 
--> Clean the code!!!
+-> Clean up the code
 
--> Clean valgrind?
+-> Clean up valgrind
 
--> Coder l'ASM
+-> Code assembler
     |
-    --> update readme/help (toutes les lettres en majuscule)
+    --> update readme/help (all capital letters)
     |
     --> verif parsing hexa/','
     |
     --> debug MISSILE
 
 -> Schip8? -> update readme
-
 -> Change name? -> update readme/help/usage
 
--> Coder debugger                       DONE
+-> Code debugger                       DONE
     |
     --> Add system to display RAM -> update readme/help
     |

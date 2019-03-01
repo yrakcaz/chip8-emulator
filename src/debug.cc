@@ -40,7 +40,7 @@ void Debug::print_instr()
     instruction[1] = ram_->ram_get(cpu_->pc_get() + 1);
     uint16_t instr = (instruction[0] << 8) | instruction[1];
     std::cout << i_ << " :\t0x" << std::hex << cpu_->pc_get() << std::dec;
-    char* litteral = disass.treat_instruction(instr);
+    char* litteral = disass.handle_instruction(instr);
     std::cout << "\t" << litteral << std::endl << std::endl;
     delete litteral;
 }

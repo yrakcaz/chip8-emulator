@@ -28,7 +28,7 @@ void Disass::run()
         instr = (file_.get() << 8) | file_.get();
         if (instr == 0xFFFF)
             continue;
-        char* litteral = treat_instruction(instr);
+        char* litteral = handle_instruction(instr);
         std::cout << "0x" << std::hex << count_ << ":\t0x" << instr << std::dec
             << ":\t\t" << litteral << std::endl;
         delete litteral;
@@ -36,7 +36,7 @@ void Disass::run()
     } while (file_.good());
 }
 
-char* Disass::treat_instruction(uint16_t instr)
+char* Disass::handle_instruction(uint16_t instr)
 {
     char* ret = new char[128];
     uint8_t instruction[2];

@@ -14,7 +14,7 @@ class Disass
 
     public:
         void run();
-        char* treat_instruction(uint16_t instr);
+        char* handle_instruction(uint16_t instr);
 
     private:
         std::ifstream file_;

@@ -3,23 +3,23 @@
 
 # include <cstdint>
 # include <cstdio>
-# include <iostream>
 # include <fstream>
+# include <iostream>
 # include <string>
 
 # define RAM_BEGIN 0x200
 
-# define RAM_SIZE       4096
-# define SPRITES_SIZE   80
+# define RAM_SIZE 4096
+# define SPRITES_SIZE 80
 
 class RAM
 {
     public:
         RAM();
-        RAM(char* file);
+        RAM(const char* file);
         ~RAM();
 
-        uint8_t ram_get(int i);
+        uint8_t ram_get(int i) const;
         void ram_set(int i, uint8_t val);
 
         void print();

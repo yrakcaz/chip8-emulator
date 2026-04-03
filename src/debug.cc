@@ -1,4 +1,4 @@
-#include "../includes/debug.hh"
+#include <debug.hh>
 
 Debug::Debug()
 {
@@ -29,7 +29,7 @@ void Debug::stop()
 void Debug::wait()
 {
     char c;
-    while (read(STDIN_FILENO, &c, 1) == 0) {}
+    while (read(STDIN_FILENO, &c, 1) == 0);
 }
 
 void Debug::print_instr()
@@ -40,9 +40,8 @@ void Debug::print_instr()
     instruction[1] = ram_->ram_get(cpu_->pc_get() + 1);
     uint16_t instr = (instruction[0] << 8) | instruction[1];
     std::cout << i_ << " :\t0x" << std::hex << cpu_->pc_get() << std::dec;
-    char* litteral = disass.handle_instruction(instr);
-    std::cout << "\t" << litteral << std::endl << std::endl;
-    delete litteral;
+    std::string literal = disass.handle_instruction(instr);
+    std::cout << "\t" << literal << std::endl << std::endl;
 }
 
 void Debug::print_status()
@@ -64,7 +63,7 @@ void Debug::print_status()
 
         printf("PC : 0x%x\n", cpu_->pc_get());
         printf("SP : 0x%x\n", cpu_->sp_get());
-        printf("I : 0x%x\n", cpu_->Ireg_get());
+        printf("I : 0x%x\n", cpu_->ireg_get());
         printf("Timer : 0x%x\n", cpu_->timer_get());
         printf("Sound : 0x%x\n", cpu_->sound_get());
 

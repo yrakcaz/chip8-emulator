@@ -1,11 +1,12 @@
 #ifndef DEBUG_HH
 # define DEBUG_HH
 
-# include <unistd.h>
 # include <cstdio>
-# include "CPU.hh"
-# include "RAM.hh"
-# include "disass.hh"
+# include <unistd.h>
+
+# include <cpu.hh>
+# include <disass.hh>
+# include <ram.hh>
 
 class Debug
 {

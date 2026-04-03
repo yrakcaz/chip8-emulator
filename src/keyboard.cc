@@ -1,4 +1,4 @@
-#include "../includes/keyboard.hh"
+#include <keyboard.hh>
 
 Keyboard::Keyboard()
 {
@@ -51,7 +51,7 @@ int Keyboard::is_key_pressed(int c)
 
 int Keyboard::get_key_pressed()
 {
-    while (1)
+    while (true)
     {
         SDL_PollEvent(&event_);
         if (event_.type == SDL_KEYDOWN)

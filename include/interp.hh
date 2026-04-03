@@ -1,12 +1,12 @@
 #ifndef INTERP_HH
 # define INTERP_HH
 
-# include <iostream>
-# include <fstream>
 # include <cstring>
+# include <fstream>
+# include <iostream>
 # include <string>
 
-# include "instruction.hh"
+# include <instruction.hh>
 
 class Interp
 {
@@ -16,10 +16,10 @@ class Interp
         ~Interp();
 
     public:
-        void interpret();
+        int interpret();
 
     private:
-        std::string normalize(std::string line);
+        std::string normalize(const std::string& line);
 
     private:
         std::ifstream in_;

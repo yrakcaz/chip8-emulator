@@ -1,4 +1,4 @@
-#include "../includes/interp.hh"
+#include <interp.hh>
 
 Interp::Interp()
 {
@@ -17,10 +17,9 @@ Interp::~Interp()
     out_.close();
 }
 
-std::string Interp::normalize(std::string line)
+std::string Interp::normalize(const std::string& line)
 {
     std::string ret;
-    int count = 0;
     int begin_flag = 0;
     for (size_t i = 0; i < line.size(); i++)
     {
@@ -34,12 +33,11 @@ std::string Interp::normalize(std::string line)
         if ((line[i] >= 'A' && line[i] <= 'Z') && !begin_flag)
             begin_flag++;
         ret += line[i] == '\t' ? ' ' : line[i];
-        count++;
     }
     return ret;
 }
 
-void Interp::interpret()
+int Interp::interpret()
 {
     std::string line;
     int l = 0;
@@ -61,5 +59,9 @@ void Interp::interpret()
         out_.write((char*)&opcode, 1);
     }
     if (rm_flag)
+    {
         remove(file_);
+        return 1;
+    }
+    return 0;
 }

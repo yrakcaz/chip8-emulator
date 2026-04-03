@@ -2,3 +2,6 @@
 .*.swp
 chip8-emulator
 makefile.rules
+*.tar.bz2
+core*
+*.asm

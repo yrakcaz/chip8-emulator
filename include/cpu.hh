@@ -5,7 +5,8 @@
 
 # include <cstdint>
 # include <cstdlib>
-# include "RAM.hh"
+
+# include <ram.hh>
 
 class CPU
 {
@@ -16,8 +17,8 @@ class CPU
         uint8_t registers_get(int i);
         void registers_set(int i, uint8_t val);
 
-        uint16_t Ireg_get();
-        void Ireg_set(uint16_t val);
+        uint16_t ireg_get();
+        void ireg_set(uint16_t val);
 
         uint8_t timer_get();
         void timer_set(uint8_t val);
@@ -50,7 +51,7 @@ class CPU
 
     private:
         uint8_t registers_[TAB_SIZE];
-        uint16_t Ireg_;
+        uint16_t ireg_;
         uint8_t timer_;
         uint8_t sound_;
         uint16_t pc_;

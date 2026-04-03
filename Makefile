@@ -1,32 +1,36 @@
-EXE=chip8-emulator
+BIN=chip8-emulator
 CXX=g++
-CXXFLAGS=-Wall -Wextra -Werror -std=c++11 -pedantic -I/usr/local/include
-SRC=src/keyboard.cc src/RAM.cc src/CPU.cc src/display.cc src/emulator.cc \
+CXXFLAGS=-Wall -Wextra -Werror -std=c++11 -pedantic -Iinclude/
+SRC=src/keyboard.cc src/ram.cc src/cpu.cc src/display.cc src/emulator.cc \
 	src/disass.cc src/debug.cc src/instruction.cc src/interp.cc src/main.cc
 LDFLAGS=`sdl-config --libs`
 OBJ=$(SRC:.cc=.o)
-TAR=yrakcaz-chip8-emulator
+TAR=yrakcaz-$(BIN)
+PREFIX=/usr/local
 
 -include makefile.rules
 
-all: $(EXE)
+all: $(BIN)
 
-$(EXE): $(OBJ)
-	$(CXX) $(CXXFLAGS) -o $(EXE) $^ $(LDFLAGS)
+$(BIN): $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $(BIN) $^ $(LDFLAGS)
 
 %.o: %.cc
 	$(CXX) $(CXXFLAGS) -c -o $@ $^
 
 clean:
-	rm -f $(OBJ) $(EXE) $(TAR).tar.bz2
+	$(RM) $(OBJ) $(BIN) $(TAR).tar.bz2
 
 distclean: clean
-	rm -f makefile.rules core *.asm
+	$(RM) makefile.rules
 
 export:
 	git archive HEAD --prefix=$(TAR)/ | bzip2 > $(TAR).tar.bz2
 
-boot: all
-	./chip8-emulator tests/PONG
+install:
+	cp $(BIN) $(PREFIX)/bin
 
-.PHONY: all clean distclean export
+uninstall:
+	$(RM) $(PREFIX)/bin/$(BIN)
+
+.PHONY: all clean distclean export install uninstall

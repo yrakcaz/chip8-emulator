@@ -1,4 +1,4 @@
-#include "../includes/RAM.hh"
+#include <ram.hh>
 
 uint8_t fonts[80] =
 {
@@ -24,7 +24,7 @@ RAM::RAM()
 {
 }
 
-RAM::RAM(char* file)
+RAM::RAM(const char* file)
 {
     for (int i = 0; i < RAM_SIZE; i++)
     {
@@ -37,7 +37,7 @@ RAM::RAM(char* file)
     FILE *f = fopen(file, "r");
     if (f == (FILE *)0)
     {
-        printf("File opening error ocurred. Exiting program.\n");
+        printf("File opening error occurred. Exiting program.\n");
         exit(1);
     }
     int c = fgetc(f);
@@ -54,7 +54,7 @@ RAM::~RAM()
 {
 }
 
-uint8_t RAM::ram_get(int i)
+uint8_t RAM::ram_get(int i) const
 {
     return ram_[i];
 }

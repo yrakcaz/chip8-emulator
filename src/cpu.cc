@@ -1,7 +1,7 @@
-#include "../includes/CPU.hh"
+#include <cpu.hh>
 
 CPU::CPU()
-  : Ireg_(0)
+  : ireg_(0)
   , timer_(0)
   , sound_(0)
   , pc_(RAM_BEGIN)
@@ -28,14 +28,14 @@ void CPU::registers_set(int i, uint8_t val)
     registers_[i] = val;
 }
 
-uint16_t CPU::Ireg_get()
+uint16_t CPU::ireg_get()
 {
-    return Ireg_;
+    return ireg_;
 }
 
-void CPU::Ireg_set(uint16_t val)
+void CPU::ireg_set(uint16_t val)
 {
-    Ireg_ = val;
+    ireg_ = val;
 }
 
 uint8_t CPU::timer_get()
@@ -151,28 +151,28 @@ void CPU::shl(uint16_t bytes)
 void CPU::addi(uint16_t bytes)
 {
     uint8_t vx = (bytes & 0xF00) >> 8;
-    registers_[0xF] = (Ireg_ + registers_[vx] > 0xFFF) ? 1 : 0;
-    Ireg_ += registers_[vx];
+    registers_[0xF] = (ireg_ + registers_[vx] > 0xFFF) ? 1 : 0;
+    ireg_ += registers_[vx];
 }
 
 void CPU::ldb(uint16_t bytes, RAM* ram)
 {
     int v = registers_[(bytes >> 8) & 0x000F];
-    ram->ram_set(Ireg_, v / 100);
-    ram->ram_set(Ireg_ + 1, (v / 10) % 10);
-    ram->ram_set(Ireg_ + 2, (v % 100) % 10);
+    ram->ram_set(ireg_, v / 100);
+    ram->ram_set(ireg_ + 1, (v / 10) % 10);
+    ram->ram_set(ireg_ + 2, (v % 100) % 10);
 }
 
 void CPU::ld55(uint16_t bytes, RAM* ram)
 {
     uint8_t vx = (bytes & 0x0F00) >> 8;
     for (int i = 0; i <= vx; i++)
-        ram->ram_set(Ireg_ + i, registers_[i]);
+        ram->ram_set(ireg_ + i, registers_[i]);
 }
 
 void CPU::ld65(uint16_t bytes, RAM* ram)
 {
     uint8_t vx = (bytes & 0x0F00) >> 8;
     for (int i = 0; i <= vx; i++)
-        registers_[i] = ram->ram_get(Ireg_ + i);
+        registers_[i] = ram->ram_get(ireg_ + i);
 }

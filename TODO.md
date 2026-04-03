@@ -1,39 +1,27 @@
-TODO:
------
+# TODO
 
--> FIX CONFIGURE SCRIPT!!
+## Emulator
 
--> CHANGE LICENSE??
+- [x] Keyboard input
+- [x] Fix XOR rendering
+- [x] Fix TICTAC
+- [x] Test all included ROMs
 
--> Debug Emulator:
-    - Keyboard                          DONE
-    - Debug xor on screen               DONE
-    - Debug TICTAC                      DONE
-    - Test games                        DONE
+## Debugger
 
--> Update help/usage/readme!            DONE
+- [x] Step-by-step execution
+- [ ] RAM display
+- [ ] Breakpoints
 
--> Clean up the code
+## Assembler Interpreter
 
--> Clean up valgrind
+- [x] Basic interpretation
+- [ ] Verify hex / comma parsing
+- [x] Fix MISSILE ROM
 
--> Code assembler
-    |
-    --> update readme/help (all capital letters)
-    |
-    --> verif parsing hexa/','
-    |
-    --> debug MISSILE
+## General
 
--> Schip8? -> update readme
--> Change name? -> update readme/help/usage
-
--> Code debugger                       DONE
-    |
-    --> Add system to display RAM -> update readme/help
-    |
-    --> Breakpoint?
-
--> INSTALL?
-
--> Doxygen!
+- [x] Clean up code
+- [ ] Valgrind / memory checks
+- [ ] SCHIP-8 support
+- [x] Installation target (`make install`)

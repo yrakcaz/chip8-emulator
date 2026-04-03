@@ -2,13 +2,14 @@
 # define DISPLAY_HH
 
 # include <SDL/SDL.h>
-# include <iostream>
 # include <cstdint>
-# include "RAM.hh"
-# include "CPU.hh"
+# include <iostream>
+
+# include <cpu.hh>
+# include <ram.hh>
 
 # define SCALE 10
-# define SCREEN_WIDTH  (64 * SCALE)
+# define SCREEN_WIDTH (64 * SCALE)
 # define SCREEN_HEIGHT (32 * SCALE)
 
 class Display

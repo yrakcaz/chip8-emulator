@@ -1,16 +1,17 @@
 #ifndef DISPLAY_HH
 # define DISPLAY_HH
 
-# include <SDL/SDL.h>
+# include <SDL2/SDL.h>
 # include <cstdint>
-# include <iostream>
 
 # include <cpu.hh>
 # include <ram.hh>
 
+# define CHIP8_WIDTH 64
+# define CHIP8_HEIGHT 32
 # define SCALE 10
-# define SCREEN_WIDTH (64 * SCALE)
-# define SCREEN_HEIGHT (32 * SCALE)
+# define SCREEN_WIDTH (CHIP8_WIDTH * SCALE)
+# define SCREEN_HEIGHT (CHIP8_HEIGHT * SCALE)
 
 class Display
 {
@@ -19,18 +20,17 @@ class Display
         Display(RAM* ram);
         ~Display();
 
-        void screen_set(SDL_Surface* screen);
+        void renderer_set(SDL_Renderer* renderer);
         void draw_sprite(int x, int y, int pos, int len, CPU* cpu);
         void clear();
 
     private:
-        uint32_t getpixel_unit(int x, int y);
-        void putpixel_unit(int x, int y, uint32_t pixel);
         void putpixel(int x, int y, int white, CPU* cpu);
 
     private:
-        SDL_Surface* screen_;
+        SDL_Renderer* renderer_;
         RAM* ram_;
+        bool pixels_[CHIP8_WIDTH][CHIP8_HEIGHT];
 };
 
 #endif /* !DISPLAY_HH */

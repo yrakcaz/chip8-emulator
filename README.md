@@ -16,13 +16,13 @@ A CHIP-8 virtual machine emulator written in C++11. Supports standard ROM execut
 
 ## Requirements
 
-- SDL 1.2 (`libsdl1.2-dev`)
+- SDL 2 (`libsdl2-dev`)
 - g++ or clang++ with C++11 support
 
 On Debian/Ubuntu:
 
 ```
-apt install libsdl1.2-dev
+apt install libsdl2-dev
 ```
 
 ## Build

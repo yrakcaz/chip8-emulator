@@ -3,7 +3,7 @@ CXX=g++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++11 -pedantic -Iinclude/
 SRC=src/keyboard.cc src/ram.cc src/cpu.cc src/display.cc src/emulator.cc \
 	src/disass.cc src/debug.cc src/instruction.cc src/interp.cc src/main.cc
-LDFLAGS=`sdl-config --libs`
+LDFLAGS=`sdl2-config --libs`
 OBJ=$(SRC:.cc=.o)
 TAR=yrakcaz-$(BIN)
 PREFIX=/usr/local

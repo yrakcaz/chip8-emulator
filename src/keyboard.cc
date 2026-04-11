@@ -1,9 +1,8 @@
 #include <keyboard.hh>
 
 Keyboard::Keyboard()
+    : quit_(false)
 {
-    for (int i = 0; i < 256; i++)
-        key_map_[i] = -1;
     key_map_['a'] = 0x01;
     key_map_['z'] = 0x02;
     key_map_['e'] = 0x03;
@@ -20,41 +19,53 @@ Keyboard::Keyboard()
     key_map_['i'] = 0x0D;
     key_map_['o'] = 0x0E;
     key_map_['p'] = 0x0F;
-    key_map_[SDLK_ESCAPE] = SDLK_ESCAPE;
 }
 
 Keyboard::~Keyboard()
 {
 }
 
+void Keyboard::poll()
+{
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        if (event.type == SDL_QUIT)
+            quit_ = true;
+        if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+            quit_ = true;
+    }
+}
+
+bool Keyboard::should_quit() const
+{
+    return quit_;
+}
+
 int Keyboard::is_key_pressed(int c)
 {
-    SDL_PollEvent(&event_);
-    if (c == SDLK_ESCAPE && event_.type == SDL_QUIT)
-        return 1;
-    std::map<char, int>::iterator it = key_map_.begin();
-    char val = -1;
-    while (it != key_map_.end())
+    const uint8_t* state = SDL_GetKeyboardState(NULL);
+    for (auto& kv : key_map_)
     {
-        if ((*it).second == c)
-        {
-            val = (*it).first;
-            break;
-        }
-        it++;
+        if (kv.second == c)
+            return state[SDL_GetScancodeFromKey(static_cast<SDL_Keycode>(kv.first))];
     }
-    if (event_.type == SDL_KEYDOWN)
-        if (event_.key.keysym.sym == val && val != -1)
-            return 1;
     return 0;
 }
 
 int Keyboard::get_key_pressed()
 {
+    SDL_Event event;
     while (true)
     {
-        SDL_PollEvent(&event_);
-        if (event_.type == SDL_KEYDOWN)
-            return key_map_[event_.key.keysym.sym];
+        if (SDL_WaitEvent(&event) && event.type == SDL_KEYDOWN)
+        {
+            SDL_Keycode sym = event.key.keysym.sym;
+            for (auto& kv : key_map_)
+            {
+                if (static_cast<SDL_Keycode>(kv.first) == sym)
+                    return kv.second;
+            }
+        }
     }
 }

@@ -22,6 +22,7 @@
 ## General
 
 - [x] Clean up code
+- [x] Migrate to SDL2
 - [ ] Valgrind / memory checks
 - [ ] SCHIP-8 support
 - [x] Installation target (`make install`)

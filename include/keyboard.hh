@@ -1,7 +1,7 @@
 #ifndef KEYBOARD_HH
 # define KEYBOARD_HH
 
-# include <SDL/SDL.h>
+# include <SDL2/SDL.h>
 # include <map>
 
 class Keyboard
@@ -10,11 +10,13 @@ class Keyboard
         Keyboard();
         ~Keyboard();
 
+        void poll();
+        bool should_quit() const;
         int is_key_pressed(int c);
         int get_key_pressed();
 
     private:
-        SDL_Event event_;
+        bool quit_;
         std::map<char, int> key_map_;
 };
 

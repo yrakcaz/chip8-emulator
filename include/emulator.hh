@@ -41,7 +41,8 @@ class Emulator
         using Handler = void (Emulator::*)(const uint8_t*);
 
         int state_;
-        SDL_Surface* screen_;
+        SDL_Window* window_;
+        SDL_Renderer* renderer_;
         Keyboard kb_;
         CPU cpu_;
         RAM* ram_;

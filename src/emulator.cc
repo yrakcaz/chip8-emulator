@@ -29,14 +29,18 @@ Emulator::Emulator(const char* file, int dbg)
     }
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-    screen_ = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_ANYFORMAT);
-    SDL_WM_SetCaption("Chip8 Emulator", NULL);
-    display_.screen_set(screen_);
+    window_ = SDL_CreateWindow("CHIP-8 Emulator",
+                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                               SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+    renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
+    display_.renderer_set(renderer_);
 }
 
 Emulator::~Emulator()
 {
     delete ram_;
+    SDL_DestroyRenderer(renderer_);
+    SDL_DestroyWindow(window_);
 }
 
 void Emulator::fetch_decode_execute()
@@ -235,7 +239,8 @@ int Emulator::run()
     uint32_t last = SDL_GetTicks();
     while (!state_)
     {
-        if (kb_.is_key_pressed(SDLK_ESCAPE))
+        kb_.poll();
+        if (kb_.should_quit())
             break;
         if (cpu_.timer_get() > 0)
             cpu_.timer_set(cpu_.timer_get() - 1);
@@ -247,7 +252,7 @@ int Emulator::run()
         dbg_.stop();
         fetch_decode_execute();
         dbg_.print_status();
-        SDL_Flip(screen_);
+        SDL_RenderPresent(renderer_);
         while (SDL_GetTicks() - last < 16)
             continue;
         last = SDL_GetTicks();
